@@ -1,0 +1,73 @@
+#
+# spec file for package perl-Error
+#
+# Copyright (c) 2012 SUSE LINUX Products GmbH, Nuernberg, Germany.
+#
+# All modifications and additions to the file contributed by third parties
+# remain the property of their copyright owners, unless otherwise agreed
+# upon. The license for this file, and modifications and additions to the
+# file, is the same license as for the pristine package itself (unless the
+# license for the pristine package is not an Open Source License, in which
+# case the license is the MIT License). An "Open Source License" is a
+# license that conforms to the Open Source Definition (Version 1.9)
+# published by the Open Source Initiative.
+
+# Please submit bugfixes or comments via http://bugs.opensuse.org/
+#
+
+
+%bcond_with pod
+
+Name:           perl-Error
+Version:        0.17017
+Release:        7
+License:        GPL-1.0+ or Artistic-1.0
+%define cpan_name Error
+Summary:        Error/exception handling in an OO-ish way
+Url:            http://search.cpan.org/dist/Error/
+Group:          Development/Libraries/Perl
+#Source:         http://www.cpan.org/authors/id/S/SH/SHLOMIF/Error-0.17016.tar.gz
+Source:         %{cpan_name}-%{version}.tar.gz
+BuildRequires:  perl
+BuildRequires:  perl(Module::Build)
+BuildRequires:  perl-macros
+BuildRoot:      %{_tmppath}/%{name}-%{version}-build
+BuildArch:      noarch
+%{perl_requires}
+%if %{with pod}
+BuildRequires:  perl(Test::Pod) >= 1.14
+BuildRequires:  perl(Test::Pod::Coverage) >= 1.04
+%endif
+BuildRequires:  perl(Scalar::Util)
+BuildRequires:  perl(warnings)
+Requires:       perl(Scalar::Util)
+Requires:       perl(warnings)
+
+%description
+The 'Error' package provides two interfaces. Firstly 'Error' provides a
+procedural interface to exception handling. Secondly 'Error' is a base
+class for errors/exceptions that can either be thrown, for subsequent
+catch, or can simply be recorded.
+
+Errors in the class 'Error' should not be thrown directly, but the user
+should throw errors from a sub-class of 'Error'.
+
+%prep
+%setup -q -n %{cpan_name}-%{version}
+
+%build
+perl Build.PL installdirs=vendor
+./Build build flags=%{?_smp_mflags}
+
+%check
+./Build test
+
+%install
+./Build install destdir=%{buildroot} create_packlist=0
+%perl_gen_filelist
+
+%files -f %{name}.files
+%defattr(-,root,root,-)
+%doc ChangeLog examples README
+
+%changelog
