@@ -1,4 +1,3 @@
-
 %bcond_with pod
 
 Name:           perl-Error
@@ -16,7 +15,6 @@ BuildRequires:  perl(Module::Build)
 BuildRequires:  perl-macros
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
-%{perl_requires}
 %if %{with pod}
 BuildRequires:  perl(Test::Pod) >= 1.14
 BuildRequires:  perl(Test::Pod::Coverage) >= 1.04
