@@ -10,6 +10,7 @@ Url:            http://search.cpan.org/dist/Error/
 Group:          Development/Libraries/Perl
 #Source:         http://www.cpan.org/authors/id/S/SH/SHLOMIF/Error-0.17016.tar.gz
 Source:         %{cpan_name}-%{version}.tar.gz
+Source1001: 	perl-Error.manifest
 BuildRequires:  perl
 BuildRequires:  perl(Module::Build)
 BuildRequires:  perl-macros
@@ -35,6 +36,7 @@ should throw errors from a sub-class of 'Error'.
 
 %prep
 %setup -q -n %{cpan_name}-%{version}
+cp %{SOURCE1001} .
 
 %build
 perl Build.PL installdirs=vendor
@@ -48,6 +50,7 @@ perl Build.PL installdirs=vendor
 %perl_gen_filelist
 
 %files -f %{name}.files
+%manifest %{name}.manifest
 %defattr(-,root,root,-)
 %doc ChangeLog examples README
 
